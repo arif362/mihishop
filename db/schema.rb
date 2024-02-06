@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20180606054028) do
 
-  create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "firstname"
     t.string "lastname"
     t.string "address"
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "admin_brands", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "admin_brands", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.string "slug"
     t.text "description"
@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "admin_categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "admin_categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.string "slug"
     t.string "description"
@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "blogs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "blogs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "title"
     t.text "body"
     t.integer "user_id"
@@ -62,7 +62,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.text "body"
     t.integer "user_id"
     t.boolean "is_approved"
@@ -71,7 +71,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "contacts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "contacts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "full_name"
     t.string "email"
     t.string "phone"
@@ -82,7 +82,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "customer_returns", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "customer_returns", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "number"
     t.integer "stock_location_id"
     t.integer "order_id"
@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "feedbacks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "feedbacks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.string "email"
     t.string "feedback_type"
@@ -103,7 +103,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "friendly_id_slugs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "friendly_id_slugs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "slug", null: false
     t.integer "sluggable_id", null: false
     t.string "sluggable_type", limit: 50
@@ -115,7 +115,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
-  create_table "home_sliders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "home_sliders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -124,7 +124,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.string "link"
   end
 
-  create_table "images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "viewable_type"
     t.bigint "viewable_id"
     t.integer "width"
@@ -139,7 +139,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.index ["viewable_type", "viewable_id"], name: "index_images_on_viewable_type_and_viewable_id"
   end
 
-  create_table "line_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "line_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "variant_id"
     t.integer "order_id"
     t.integer "quantity"
@@ -153,14 +153,14 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "newsletter_subscriptions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "newsletter_subscriptions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "email"
     t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "orders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "orders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "number"
     t.decimal "item_total", precision: 10, default: "0"
     t.decimal "total", precision: 10, default: "0"
@@ -195,7 +195,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.decimal "tax_total", precision: 10, default: "0"
   end
 
-  create_table "payment_methods", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "payment_methods", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "type"
     t.string "name"
     t.text "description"
@@ -205,7 +205,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "payments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "payments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.decimal "amount", precision: 10
     t.integer "order_id"
     t.integer "payment_method_id"
@@ -219,7 +219,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.string "source_type"
   end
 
-  create_table "paypal_express_checkouts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "paypal_express_checkouts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "token"
     t.string "payer_id"
     t.integer "order_id"
@@ -231,7 +231,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "product_categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "product_categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "product_id"
     t.bigint "category_id"
     t.datetime "created_at", null: false
@@ -240,7 +240,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.index ["product_id"], name: "index_product_categories_on_product_id"
   end
 
-  create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "code", null: false
     t.string "name"
     t.text "description"
@@ -274,7 +274,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.index ["brand_id"], name: "index_products_on_brand_id"
   end
 
-  create_table "refunds", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "refunds", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "payment_id"
     t.decimal "amount", precision: 10
     t.string "reason"
@@ -282,14 +282,14 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "related_products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "related_products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "product_id"
     t.integer "relative_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "return_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "return_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "customer_return_id"
     t.integer "line_item_id"
     t.boolean "resellable"
@@ -297,7 +297,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "reviews", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "reviews", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.integer "rating"
     t.text "text"
@@ -309,7 +309,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "rewards_points", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "rewards_points", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "order_id"
     t.float "points", limit: 24, default: 0.0
     t.string "reason"
@@ -318,7 +318,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "shipments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "shipments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "tracking"
     t.string "number"
     t.decimal "cost", precision: 10, default: "0"
@@ -334,7 +334,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.integer "shipping_method_id"
   end
 
-  create_table "shipping_methods", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "shipping_methods", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.string "display_on"
     t.datetime "deleted_at"
@@ -346,7 +346,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "stock_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "stock_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "stock_location_id"
     t.integer "product_id"
     t.integer "count_on_hand", default: 0
@@ -356,7 +356,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "stock_locations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "stock_locations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.boolean "default", default: false
     t.string "address"
@@ -373,7 +373,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "stock_movements", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "stock_movements", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "stock_item_id"
     t.integer "quantity", default: 0
     t.string "action"
@@ -383,7 +383,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "stock_transfers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "stock_transfers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "transfer_type"
     t.string "reference"
     t.integer "source_location_id"
@@ -393,7 +393,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "trackings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "trackings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.text "comment"
     t.integer "user_id"
     t.integer "shipment_id"
@@ -401,7 +401,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -422,7 +422,7 @@ ActiveRecord::Schema.define(version: 20180606054028) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "wishlists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci" do |t|
+  create_table "wishlists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "product_id"
     t.integer "user_id"
     t.datetime "created_at", null: false
