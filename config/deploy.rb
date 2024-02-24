@@ -24,7 +24,7 @@ set :ssh_options, {
 
 # Default value for :pty is false
 # set :pty, true
-server '52.76.157.104', user: 'ubuntu', roles: %w{web app}
+server '18.142.23.30', user: 'ubuntu', roles: %w{web app}
 
 set :rvm_ruby_version, '2.3.1'
 
