@@ -12,11 +12,12 @@
 //
 //= require jquery
 //= require rails-ujs
-//= require turbolinks
+// Turbolinks replaced by Turbo (turbo-rails gem) in Rails 7+
+// Turbo is loaded via importmap or javascript pack
 //= require lightgallery.min
 //= require_tree .
 
-$(document).on('turbolinks:load', function () {
+$(document).on('turbo:load', function () {
     $(function () {
         var quickview_modal = $('#quickview-modal');
         $('.star-rating').rateit();

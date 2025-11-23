@@ -38,7 +38,7 @@ class User < ApplicationRecord
   has_many :reviews
   has_many :orders
   has_many :rewards_points
-  belongs_to :ship_address, class_name: 'Address'
+  belongs_to :ship_address, class_name: 'Address', optional: true
 
   accepts_nested_attributes_for :ship_address
 

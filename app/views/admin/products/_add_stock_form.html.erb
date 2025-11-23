@@ -4,44 +4,65 @@
   </h1>
 </div>
 <div class="panel-body">
-  <%= form_for [:admin, StockMovement.new], url: admin_stock_items_path do |f| %>
+  <%= form_for [:admin, StockMovement.new], url: admin_stock_items_path, html: { id: 'add_stock_form_element' } do |f| %>
     <div data-hook="admin_stock_movements_form_fields" class="row">
       <div class="col-md-2">
         <div class="form-group">
-          <%= f.field_container :quantity do %>
-            <%= f.label :quantity, t(:quantity) %>
-            <%= f.number_field :quantity, class: 'form-control', value: 1 %>
-          <% end %>
-        </div>
-      </div>
-      <div class="col-md-5">
-        <div class="form-group">
-          <%= f.field_container :stock_location do %>
-            <%= label_tag :stock_location_id, t(:stock_location) %>
-            <%= select_tag 'stock_location_id', options_from_collection_for_select(@stock_locations, :id, :name), class: 'form-control', id: :product_stock_location_select %>
-          <% end %>
+          <%= f.label :quantity, t(:quantity) %>
+          <%= f.number_field :quantity, class: 'form-control', value: 1, min: 1 %>
         </div>
       </div>
 
       <div class="col-md-5">
         <div class="form-group">
-          <%= f.field_container :product_id do %>
-            <%= label_tag 'product_id', t(:product) %>
-            <%= select_tag 'product_id', options_from_collection_for_select(@products, :id, :code), class: 'form-control', id: :product_code_select %>
-          <% end %>
+          <%= label_tag :stock_location_id, t(:stock_location) %>
+          <%= select_tag 'stock_location_id',
+                options_from_collection_for_select(@stock_locations, :id, :name),
+                class: 'form-control',
+                id: :product_stock_location_select,
+                required: true %>
+        </div>
+      </div>
+
+      <div class="col-md-5">
+        <div class="form-group">
+          <%= label_tag 'product_id', t(:product) %>
+          <%= select_tag 'product_id',
+                options_from_collection_for_select(@products, :id, :code),
+                class: 'form-control',
+                id: :product_code_select,
+                required: true %>
         </div>
       </div>
     </div>
 
     <div class="form-actions text-center" data-hook="buttons">
-      <%= button t(:add_stock), 'plus' %>
+      <%= button_tag t(:add_stock), type: 'submit', class: 'btn btn-primary' do %>
+        <i class="fa fa-plus"></i> <%= t(:add_stock) %>
+      <% end %>
     </div>
   <% end %>
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        $('#product_stock_location_select').select2();
-        $('#product_code_select').select2();
+    function initializeStockFormSelects() {
+        if (typeof $.fn.select2 !== 'undefined') {
+            $('#product_stock_location_select').select2({
+                placeholder: '<%= t(:select_stock_location) rescue "Select Stock Location" %>',
+                width: '100%'
+            });
+            $('#product_code_select').select2({
+                placeholder: '<%= t(:select_product) rescue "Select Product" %>',
+                width: '100%'
+            });
+        }
+    }
+
+    $(document).on('turbo:load', function() {
+        initializeStockFormSelects();
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeStockFormSelects();
     });
 </script>

@@ -36,13 +36,13 @@
 #  updated_at             :datetime         not null
 FactoryBot.define do
   factory :stock_location do
-    name "stockLocation"
-    address Faker::Address.state
-    city Faker::Address.city
-    state Faker::Address.state
-    zipcode Faker::Address.zip_code
-    country Faker::Address.country
-    phone Faker::PhoneNumber.phone_number
-    active true
+    name { "stockLocation" }
+    address { Faker::Address.state }
+    city { Faker::Address.city }
+    state { Faker::Address.state }
+    zipcode { Faker::Address.zip_code }
+    country { Faker::Address.country }
+    phone { Faker::PhoneNumber.phone_number }
+    active { true }
   end
 end

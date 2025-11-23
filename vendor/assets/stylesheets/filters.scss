@@ -11,7 +11,8 @@
     letter-spacing: 2px;
     font-weight: bold;
     font-size: 11px;
-    padding: ($padding-base-vertical + 3) $padding-base-horizontal ($padding-base-vertical + 2);
+    // Bootstrap 3 default values: $padding-base-vertical: 6px, $padding-base-horizontal: 12px
+    padding: 9px 12px 8px; // (6 + 3)px 12px (6 + 2)px
     border-right: none;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
@@ -20,7 +21,7 @@
     &:active, &:focus {
       color: #333;
       background-color: transparent !important;
-      border-color: $input-border !important;
+      border-color: #ccc !important; // $input-border default value
       -webkit-box-shadow: none;
       -moz-box-shadow: none;
       box-shadow: none;

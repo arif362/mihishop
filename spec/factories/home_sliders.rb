@@ -13,9 +13,8 @@
 
 FactoryBot.define do
   factory :homeSlider do
-    image { Rack::Test::UploadedFile.new(Rails.root.join('spec','support','images', 'top_logo.png'), 'image/png') }
-    title "This is title"
-    sub_title "this is sub title"
+    image { Rack::Test::UploadedFile.new(Rails.root.join('spec','support','images', 'top_logo.png')) }
+    title { "This is title" }
+    sub_title { "this is sub title" }
   end
 end
-

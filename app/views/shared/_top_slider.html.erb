@@ -7,11 +7,51 @@
 </div>
 
 <script type="text/javascript">
-    $(document).on('turbolinks:load', function () {
-        $('.top-slider').slick({
-            dots: !0,
+    // Initialize slider with proper Turbo support
+    function initializeTopSlider() {
+        var $slider = $('.top-slider');
+
+        // Check if slider exists and has items
+        if ($slider.length === 0 || $slider.children().length === 0) {
+            return;
+        }
+
+        // Destroy existing slider instance if it exists (prevents multiple initializations)
+        if ($slider.hasClass('slick-initialized')) {
+            $slider.slick('unslick');
+        }
+
+        // Initialize Slick slider
+        $slider.slick({
+            dots: true,
             autoplay: true,
-            infinite: true
+            autoplaySpeed: 3000,
+            infinite: true,
+            speed: 500,
+            fade: false,
+            cssEase: 'linear',
+            arrows: true,
+            prevArrow: '<button type="button" class="slick-prev">Previous</button>',
+            nextArrow: '<button type="button" class="slick-next">Next</button>',
+            responsive: [
+                {
+                    breakpoint: 768,
+                    settings: {
+                        arrows: false,
+                        dots: true
+                    }
+                }
+            ]
         });
+    }
+
+    // Initialize on turbo:load (Turbo navigation)
+    $(document).on('turbo:load', function () {
+        initializeTopSlider();
+    });
+
+    // Also initialize on DOMContentLoaded (first page load)
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeTopSlider();
     });
 </script>

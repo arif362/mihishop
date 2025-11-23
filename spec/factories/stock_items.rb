@@ -14,7 +14,7 @@
 
 FactoryBot.define do
   factory :stock_item do
-    product_id 10
+    product_id { 10 }
     stock_location
   end
 end

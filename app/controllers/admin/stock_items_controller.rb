@@ -3,18 +3,34 @@ module Admin
     before_action :set_stock_item, only: [:update, :destroy]
 
     def create
-      product = Product.find(params[:product_id])
-      stock_location = StockLocation.find(params[:stock_location_id])
-      stock_movement = stock_location.stock_movements.build(stock_movement_params)
+      begin
+        product = Product.find(params[:product_id])
+        stock_location = StockLocation.find(params[:stock_location_id])
 
-      stock_movement.stock_item = stock_location.set_up_stock_item(product)
+        # Build stock movement with quantity
+        stock_movement = stock_location.stock_movements.build(stock_movement_params)
 
-      if stock_movement.save
-        flash[:success] = 'Stock successfully added.'
-      else
-        flash[:error] = 'unable to add stock'
+        # Set up or find existing stock item for this product and location
+        stock_movement.stock_item = stock_location.set_up_stock_item(product)
+
+        # Set the originator (the current user who is adding the stock)
+        # current_user is provided by Devise and represents the logged-in admin
+        stock_movement.originator = current_user
+
+        if stock_movement.save
+          flash[:success] = 'Stock successfully added.'
+        else
+          flash[:error] = "Unable to add stock: #{stock_movement.errors.full_messages.join(', ')}"
+        end
+        redirect_to stock_admin_product_path(product)
+      rescue ActiveRecord::RecordNotFound => e
+        flash[:error] = "Record not found: #{e.message}"
+        redirect_back(fallback_location: admin_products_path)
+      rescue StandardError => e
+        flash[:error] = "Error adding stock: #{e.message}"
+        Rails.logger.error "Stock creation error: #{e.message}\n#{e.backtrace.join("\n")}"
+        redirect_back(fallback_location: admin_products_path)
       end
-      redirect_to stock_admin_product_path(product)
     end
 
     def update

@@ -45,8 +45,8 @@ class Product < ApplicationRecord
 
   attr_readonly :price
 
-  belongs_to :brand, class_name: 'Admin::Brand'
-  belongs_to :product, foreign_key: :product_id
+  belongs_to :brand, class_name: 'Admin::Brand', optional: true
+  belongs_to :product, foreign_key: :product_id, optional: true
   has_many :product_categories, dependent: :destroy
   has_many :categories, class_name: 'Admin::Category', through: :product_categories
   has_many :variants, class_name: 'Product', foreign_key: :product_id, dependent: :destroy
@@ -139,12 +139,12 @@ class Product < ApplicationRecord
   end
 
   def should_track_inventory?
-    track_inventory? #&& Config.track_inventory_levels TODO: Need to check this
+    # Access the database column directly using read_attribute to avoid method recursion
+    read_attribute(:track_inventory) #&& Config.track_inventory_levels TODO: Need to check this
   end
 
-  def track_inventory
-    should_track_inventory?
-  end
+  # The track_inventory attribute is already provided by the database column
+  # No need to define a method as it would shadow the attribute accessor
 
   def total_on_hand
     stock_items.sum(:count_on_hand)

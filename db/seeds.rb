@@ -9,6 +9,7 @@ puts 'inserting admin'
 user = User.first_or_create(
     email: "ariful@mihishop.com",
     password: "password",
+    password_confirmation: 'password',
     role: "admin"
 )
 puts 'Inserting feedback'
