@@ -1,7 +1,7 @@
 module Admin
   class HomeSlidersController < Admin::BaseController
 
-    before_action :set_slider, only: [:show, :edit, :update, :destroy]
+    before_action :set_slider, only: [:edit, :update, :destroy]
 
     def index
       @sliders = HomeSlider.all

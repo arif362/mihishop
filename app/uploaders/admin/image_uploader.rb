@@ -5,8 +5,8 @@ class Admin::ImageUploader < CarrierWave::Uploader::Base
   # *************************************************#
 
   # Include RMagick or MiniMagick support:
-  include CarrierWave::RMagick
-  # include CarrierWave::MiniMagick
+  # include CarrierWave::RMagick
+  include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
   storage :file
@@ -70,9 +70,9 @@ class Admin::ImageUploader < CarrierWave::Uploader::Base
     if file && model
       model.content_type = file.content_type if file.content_type
       model.file_size = file.size
-      img = ::Magick::Image::read(file.file).first
-      model.width = img.columns
-      model.height = img.rows
+      img = ::MiniMagick::Image.open(file.file)
+      model.width = img.width
+      model.height = img.height
     end
   end
 end

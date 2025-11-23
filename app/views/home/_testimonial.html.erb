@@ -91,15 +91,46 @@
 </section>
 
 <script type="text/javascript">
-    $(document).on('turbolinks:load', function () {
-        $('.testimonial-slider').slick({
+    function initializeTestimonialSlider() {
+        var $slider = $('.testimonial-slider');
+
+        // Check if slider exists
+        if ($slider.length === 0) {
+            return;
+        }
+
+        // Destroy existing slider instance if it exists
+        if ($slider.hasClass('slick-initialized')) {
+            $slider.slick('unslick');
+        }
+
+        // Initialize Slick slider
+        $slider.slick({
             infinite: true,
             slidesToShow: 1,
             slidesToScroll: 1,
             autoplay: true,
-            dot: true
+            autoplaySpeed: 4000,
+            dots: true, // Fixed: was 'dot: true' which is incorrect
+            arrows: true,
+            fade: true,
+            cssEase: 'linear'
         });
+    }
 
-        $("#lightgallery li").lightGallery();
+    function initializeLightGallery() {
+        if (typeof $.fn.lightGallery !== 'undefined') {
+            $("#lightgallery li").lightGallery();
+        }
+    }
+
+    $(document).on('turbo:load', function () {
+        initializeTestimonialSlider();
+        initializeLightGallery();
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeTestimonialSlider();
+        initializeLightGallery();
     });
 </script>

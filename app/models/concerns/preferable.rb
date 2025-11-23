@@ -2,7 +2,7 @@ module Preferable
   extend ActiveSupport::Concern
 
   included do
-    serialize :preferences, Hash
+    serialize :preferences, type: Hash, coder: YAML
 
     def self.preference_getter_method(name)
       "preferred_#{name}".to_sym

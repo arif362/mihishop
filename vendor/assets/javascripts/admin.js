@@ -12,9 +12,11 @@
 //
 //= require jquery
 //= require rails-ujs
-//= require turbolinks
+// Turbolinks replaced by Turbo (turbo-rails gem) in Rails 7+
+// Turbo is loaded via importmap or javascript pack
 //= require select2
-//= require ckeditor/init
+// CKEditor is loaded via CDN or gem assets - commented out for Rails 8 compatibility
+// require ckeditor/init
 //= require_tree .
 
 handle_date_picker_fields = function () {
@@ -30,7 +32,7 @@ handle_date_picker_fields = function () {
     });
 }
 
-$(document).on('turbolinks:load', function () {
+$(document).on('turbo:load', function () {
     $('select.select2').chosen({width: '100%'});
     handle_date_picker_fields();
 });

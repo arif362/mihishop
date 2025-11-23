@@ -58,13 +58,30 @@
 </div>
 
 <script type="text/javascript">
-    $(document).on('turbolinks:load', function () {
+    function initializeProductSlider() {
+        // Add active class to first product thumb
         $('.product-thumb-wrapper').children(":first").find('a').addClass('product-active');
-        $(".list-of-recomanded-product").slick({
+
+        var $slider = $(".list-of-recomanded-product");
+
+        // Check if slider exists
+        if ($slider.length === 0) {
+            return;
+        }
+
+        // Destroy existing slider instance if it exists
+        if ($slider.hasClass('slick-initialized')) {
+            $slider.slick('unslick');
+        }
+
+        // Initialize Slick slider for recommended products
+        $slider.slick({
             infinite: true,
             slidesToShow: 4,
             slidesToScroll: 4,
             dots: false,
+            arrows: true,
+            autoplay: false,
             responsive: [
                 {
                     breakpoint: 991,
@@ -95,6 +112,14 @@
                 }
             ]
         });
+    }
+
+    $(document).on('turbo:load', function () {
+        initializeProductSlider();
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeProductSlider();
     });
 
     $('.size-selection').click(function () {
