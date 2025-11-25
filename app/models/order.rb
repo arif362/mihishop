@@ -199,18 +199,29 @@ class Order < ApplicationRecord
     elsif params[:state] == 'delivery'
       if init_shipment(permitted_params.delete(:shipping_method))
         update(permitted_params.merge(shipment_state: 'pending'))
+      else
+        errors.add(:base, 'Please select a valid shipping method')
+        false
       end
     elsif params[:state] == 'payment'
+      Rails.logger.info "=== Payment Params Debug ==="
+      Rails.logger.info "permitted_params: #{permitted_params.inspect}"
+      Rails.logger.info "permitted_params.class: #{permitted_params.class}"
+      Rails.logger.info "permitted_params.keys: #{permitted_params.keys.inspect if permitted_params.respond_to?(:keys)}"
+
       payment = build_payment(permitted_params)
-      unless payment.errors.any?
-        self.completed_at = Time.now
-        self.state = 'completed'
-        self.shipment_state = Order::ORDER_SHIPMENT_STATE[:pending]
-        self.payment_state = payment.state == 'completed' ? 'completed' : 'balance_due'
-        if save
-          remove_stock_from_inverntory
-          deliver_order_confirmation_email unless confirmation_delivered?
-        end
+      if payment.errors.any?
+        payment.errors.each { |error| errors.add(:base, error.full_message) }
+        return false
+      end
+
+      self.completed_at = Time.now
+      self.state = 'completed'
+      self.shipment_state = Order::ORDER_SHIPMENT_STATE[:pending]
+      self.payment_state = payment.state == 'completed' ? 'completed' : 'balance_due'
+      if save
+        remove_stock_from_inverntory
+        deliver_order_confirmation_email unless confirmation_delivered?
       end
     end
   end
@@ -299,6 +310,8 @@ class Order < ApplicationRecord
 
   def init_shipment(shipping_method)
     shipping = ShippingMethod.find_by_id(shipping_method)
+    return false unless shipping.present?
+
     u_shipment = shipment || build_shipment
     u_shipment.cost = shipping.rate
     u_shipment.address_id = ship_address.id
@@ -310,19 +323,67 @@ class Order < ApplicationRecord
   end
 
   def build_payment(payments_attributes)
-    payment_method_id = payments_attributes[:payments_attributes][:payment_method_id]
+    Rails.logger.info "=== build_payment Debug ==="
+    Rails.logger.info "payments_attributes: #{payments_attributes.inspect}"
+    Rails.logger.info "payments_attributes.class: #{payments_attributes.class}"
+
+    # Check if payments_attributes exists (can be Hash or ActionController::Parameters)
+    if payments_attributes.blank?
+      Rails.logger.error "Payment attributes blank"
+      return build_empty_payment_with_error('Payment information is required')
+    end
+
+    # Convert to hash if it's ActionController::Parameters
+    params_hash = payments_attributes.respond_to?(:to_unsafe_h) ? payments_attributes.to_unsafe_h : payments_attributes
+    params_hash = params_hash.with_indifferent_access if params_hash.is_a?(Hash)
+
+    payment_method_id = nil
+
+    # Try nested structure first: payments_attributes[:payments_attributes][:payment_method_id]
+    if params_hash[:payments_attributes].present?
+      nested = params_hash[:payments_attributes]
+      nested = nested.with_indifferent_access if nested.is_a?(Hash)
+      payment_method_id = nested[:payment_method_id]
+      Rails.logger.info "Found payment_method_id in nested structure: #{payment_method_id}"
+    # Try direct structure: payments_attributes[:payment_method_id]
+    elsif params_hash[:payment_method_id].present?
+      payment_method_id = params_hash[:payment_method_id]
+      Rails.logger.info "Found payment_method_id in direct structure: #{payment_method_id}"
+    end
+
+    if payment_method_id.blank?
+      Rails.logger.error "Payment method ID is blank. Params structure: #{params_hash.keys.inspect}"
+      return build_empty_payment_with_error('Please select a valid payment method')
+    end
+
     payment_method = PaymentMethod.find_by_id(payment_method_id)
-    return false unless payment_method.present?
+
+    unless payment_method.present?
+      Rails.logger.error "Payment method not found for ID: #{payment_method_id}"
+      return build_empty_payment_with_error('Please select a valid payment method')
+    end
+
+    Rails.logger.info "Building payment with method: #{payment_method.name}"
     payment_params = payment_method.process
     payment_params[:amount] = net_total
     payment_params[:payment_method_id] = payment_method_id
     payment = payments.build(payment_params)
+
     if payment.save
+      Rails.logger.info "Payment saved successfully"
       if payment_method.type == 'PaymentMethod::CreditPoint'
         RewardsPoint.create(order_id: id, points: net_total * -1, reason: "Purchased", user_id: user.id)
       end
+    else
+      Rails.logger.error "Payment save failed: #{payment.errors.full_messages}"
     end
 
+    payment
+  end
+
+  def build_empty_payment_with_error(message)
+    payment = payments.build
+    payment.errors.add(:base, message)
     payment
   end
 

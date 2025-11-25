@@ -25,6 +25,12 @@ class CheckoutController < ApplicationController
 
   # Updates the order and advances to the next state (when possible.)
   def update
+    Rails.logger.info "=== Checkout Update Action ==="
+    Rails.logger.info "All params: #{params.inspect}"
+    Rails.logger.info "params[:order]: #{params[:order].inspect}"
+    Rails.logger.info "params[:state]: #{params[:state]}"
+    Rails.logger.info "permitted_checkout_attributes: #{permitted_checkout_attributes.inspect}"
+
     if @order.update_with_params(params, permitted_checkout_attributes)
       if @order.next
         if @order.completed?
@@ -32,9 +38,13 @@ class CheckoutController < ApplicationController
         else
           redirect_to checkout_state_path(@order.state)
         end
+      else
+        flash[:error] = "Unable to advance to the next checkout step" unless @order.errors.empty?
+        render :edit
       end
     else
-      render :edit#@order.state
+      flash[:error] = @order.errors.full_messages.join(", ") unless @order.errors.empty?
+      render :edit
     end
   end
 
@@ -53,7 +63,7 @@ class CheckoutController < ApplicationController
   private
 
   def permitted_checkout_attributes
-    params[:order].permit!
+    params[:order].present? ? params[:order].permit! : {}
   end
 
   def validate_state
@@ -108,6 +118,10 @@ class CheckoutController < ApplicationController
 
   def load_order_with_lock
     @order = current_order
+    unless @order.present?
+      flash[:error] = "Your shopping cart is empty"
+      redirect_to products_path
+    end
   end
 
   def ensure_valid_state_lock_version
@@ -136,18 +150,18 @@ class CheckoutController < ApplicationController
   end
 
   def ensure_checkout_allowed
-    unless @order.line_items.count > 0
+    unless @order&.line_items&.count&.> 0
       flash[:error] = "Your shopping cart is empty"
       redirect_to products_path
     end
   end
 
   def ensure_order_not_completed
-    redirect_to products_path if @order.completed?
+    redirect_to products_path if @order&.completed?
   end
 
   def ensure_sufficient_stock_lines
-    if @order.insufficient_stock_lines.present?
+    if @order&.insufficient_stock_lines&.present?
       flash[:error] = t(:inventory_error_flash_for_insufficient_quantity)
       redirect_to cart_checkout_path
     end
@@ -159,6 +173,7 @@ class CheckoutController < ApplicationController
   end
 
   def setup_for_current_state
+    return unless @order.present?
     method_name = :"before_#{@order.state}"
     send(method_name) if respond_to?(method_name, true)
   end
