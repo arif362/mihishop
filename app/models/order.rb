@@ -97,7 +97,7 @@ class Order < ApplicationRecord
   friendly_id :number, slug_column: :number, use: :slugged
 
   belongs_to :user
-  belongs_to :ship_address, foreign_key: :ship_address_id, class_name: 'Address'
+  belongs_to :ship_address, foreign_key: :ship_address_id, class_name: 'Address', optional: true
   belongs_to :store, class_name: 'StockLocation'
   has_many :line_items
   has_one :shipment
@@ -194,11 +194,11 @@ class Order < ApplicationRecord
 
   def update_with_params(params, permitted_params)
     if params[:state] == 'address'
-      add_ship_id_to_user if status = update_attributes(permitted_params)
+      add_ship_id_to_user if status = update(permitted_params)
       status
     elsif params[:state] == 'delivery'
       if init_shipment(permitted_params.delete(:shipping_method))
-        update_attributes(permitted_params.merge(shipment_state: 'pending'))
+        update(permitted_params.merge(shipment_state: 'pending'))
       end
     elsif params[:state] == 'payment'
       payment = build_payment(permitted_params)
@@ -327,12 +327,12 @@ class Order < ApplicationRecord
   end
 
   def approved_by(user)
-    update_attributes(approver_id: user.id, approved_at: Time.current)
+    update(approver_id: user.id, approved_at: Time.current)
   end
 
 
   def canceled_by(user)
-    update_attributes(canceler_id: user.id,  	canceled_at: Time.current, state: 'canceled')
+    update(canceler_id: user.id, canceled_at: Time.current, state: 'canceled')
   end
 
   def credit_rewards_point

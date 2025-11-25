@@ -37,7 +37,7 @@ module Admin
         params[:user].delete(:password_confirmation)
       end
 
-      if @user.update_attributes(user_params)
+      if @user.update(user_params)
         flash.now[:success] = t(:account_updated)
       end
 
@@ -55,7 +55,7 @@ module Admin
 
     def addresses
       if request.put?
-        if @user.update_attributes(user_params)
+        if @user.update(user_params)
           flash.now[:success] = t(:account_updated)
         end
         render :addresses
