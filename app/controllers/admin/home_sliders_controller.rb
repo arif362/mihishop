@@ -46,9 +46,9 @@ module Admin
     end
 
     def destroy
-
       @slider.destroy
       respond_to do |format|
+        format.html { redirect_to admin_home_sliders_path, notice: 'Slider was successfully deleted.' }
         format.js
       end
     end
